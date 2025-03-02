@@ -57,7 +57,7 @@ define('LOGO_SIZE', $logo_size = [
 
 ### CSS
 SimpliBlank theme is built to use SCSS, all scss can go in the /assets/scss and import into the main style.scss
-I use the [https://marketplace.visualstudio.com/items?itemName=glenn2223.live-sass](Live Sass Compiler by Glenn Marks) extension in my VS Code
+I use the [Live Sass Compiler by Glenn Marks](https://marketplace.visualstudio.com/items?itemName=glenn2223.live-sass) extension in my VS Code
 
 ### JS
 SimpliBlank theme does not have jquery enqueued aso is setup to use Vanilla JS. Just drop your JS into /assets/js/script.js
