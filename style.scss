@@ -1,0 +1,19 @@
+/*
+Theme Name: SimpliBlank Theme
+Theme URI: https://github.com/westcoastdigital/SimpliBlank
+Author: SimpliWeb
+Author URI: https://simpliweb.com.au
+Description: A blank starter theme for SimpliWeb. Removes all block editor support, cleans the admin and the head.
+Version: 1.0
+*/
+
+@import "assets/scss/wordpress-core";
+@import "assets/scss/mixins";
+
+h1 {
+    font-size: pxtorem(32);
+
+    @include breakpoint(lg) {
+        font-size: pxtorem(45);
+    }
+}
