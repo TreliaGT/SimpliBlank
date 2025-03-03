@@ -66,8 +66,8 @@ if (!function_exists('simpli_numbered_pagination')) {
             $links[] = $paged + 1;
         }
 
-        $woo_class = class_exists( 'WooCommerce' ) ? 'woocommerce-pagination' : 'woocommerce-pagination';
-        $woo_list_class = class_exists( 'WooCommerce' ) ? 'page-numbers' : 'page-numbers';
+        $woo_class = class_exists('WooCommerce') ? 'woocommerce-pagination' : 'woocommerce-pagination';
+        $woo_list_class = class_exists('WooCommerce') ? 'page-numbers' : 'page-numbers';
         echo '<nav class="' .  $woo_class . '"><ul class="'  . $woo_list_class  . '">' . "\n";
 
         /** Previous Post Link */
@@ -272,7 +272,7 @@ if (!function_exists('calculate_reading_time')) {
      * Calculate the average reading time for a post
      *
      * Usage example with the main content only (default behavior): echo <?= 'Estimated reading time: ' . calculate_reading_time(get_the_ID()); ?>
-     * Usage example with a single ACF field: <?= echo 'Estimated reading time: ' . calculate_reading_time(get_the_ID(), array('your_acf_field_name')); ?>
+     * Usage example with a single ACF field: <?= 'Estimated reading time: ' . calculate_reading_time(get_the_ID(), array('your_acf_field_name')); ?>
      * Usage example with multiple fields, including ACF fields and/or other custom fields: <?= echo 'Estimated reading time: ' . calculate_reading_time(get_the_ID(), array('your_acf_field_name', 'another_custom_field')); ?>
      *
      * Returns a string formatted as "x minute(s)" or "x hour(s) and x minute(s)"
@@ -326,5 +326,60 @@ if (!function_exists('calculate_reading_time')) {
         } else {
             return;
         }
+    }
+}
+
+if (!function_exists('simpli_breadcrumbs')) {    
+    /**
+     * Custom breadcrumbs for site
+     * 
+     * Usage echo simpli_breadcrumbs();
+     *
+     * @return void
+     */
+    function simpli_breadcrumbs()
+    {
+        $breadcrumbs = '';
+
+        // return empty if home or blog page
+        if (is_home() || is_front_page()) {
+            return;
+        }
+
+        $breadcrumbs .= '<nav aria-label="breadcrumb">';
+        $breadcrumbs .= '<ol class="breadcrumb justify-content-center">';
+
+        // Home link
+        $breadcrumbs .= '<li class="breadcrumb-item"><a class="text-white" href="' . home_url() . '">Home</a></li>';
+
+        if (is_category() || is_single()) {
+            $category = get_the_category();
+            if ($category) {
+                $breadcrumbs .= '<li class="breadcrumb-item"><a class="text-white" href="' . get_category_link($category[0]->term_id) . '">' . esc_html($category[0]->name) . '</a></li>';
+            }
+            if (is_single()) {
+                $breadcrumbs .= '<li class="breadcrumb-item text-white active" aria-current="page">' . get_the_title() . '</li>';
+            }
+        } elseif (is_page()) {
+            global $post;
+            if ($post->post_parent) {
+                $ancestors = array_reverse(get_post_ancestors($post->ID));
+                foreach ($ancestors as $ancestor) {
+                    $breadcrumbs .= '<li class="breadcrumb-item"><a class="text-white" href="' . get_permalink($ancestor) . '">' . get_the_title($ancestor) . '</a></li>';
+                }
+            }
+            $breadcrumbs .= '<li class="breadcrumb-item text-white active" aria-current="page">' . get_the_title() . '</li>';
+        } elseif (is_archive()) {
+            $breadcrumbs .= '<li class="breadcrumb-item text-white active" aria-current="page">' . post_type_archive_title('', false) . '</li>';
+        } elseif (is_search()) {
+            $breadcrumbs .= '<li class="breadcrumb-item text-white active" aria-current="page">Search results for "' . get_search_query() . '"</li>';
+        } elseif (is_404()) {
+            $breadcrumbs .= '<li class="breadcrumb-item text-white active" aria-current="page">404 Not Found</li>';
+        }
+
+        $breadcrumbs .= '</ol>';
+        $breadcrumbs .= '</nav>';
+
+        return $breadcrumbs;
     }
 }
