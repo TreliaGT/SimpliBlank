@@ -103,10 +103,17 @@ class simplitheme_setup
 
     function load_scripts()
     {
+        //script.js
         $script_file = get_template_directory_uri() . '/assets/js/script.js';
         $script_file_time = filemtime(get_template_directory() . '/assets/js/script.js');
         wp_register_script('simpli-script', $script_file, array(), $script_file_time, true);
         wp_enqueue_script('simpli-script');
+
+          // icon.js
+        $icon_file = get_template_directory_uri() . '/assets/js/icon.js';
+        $icon_file_time = filemtime(get_template_directory() . '/assets/js/icon.js');
+        wp_register_script('simpli-icon', $icon_file, array(), $icon_file_time, true);
+        wp_enqueue_script('simpli-icon');
     }
 
     function remove_global_styles()
